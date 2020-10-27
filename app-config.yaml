@@ -1,0 +1,94 @@
+app:
+  title: Scaffolded Backstage App
+  baseUrl: http://localhost:7000
+
+organization:
+  name: Acme Corporation
+
+backend:
+  baseUrl: http://localhost:7000
+  listen:
+    port: 7000
+  csp:
+    connect-src: ["'self'", 'https:']
+  database:
+    client: sqlite3
+    connection: ':memory:'
+
+proxy:
+  '/test':
+    target: 'https://example.com'
+    changeOrigin: true
+
+techdocs:
+  storageUrl: http://localhost:7000/api/techdocs/static/docs
+  requestUrl: http://localhost:7000/api/techdocs/docs
+  generators:
+    techdocs: 'docker'
+
+lighthouse:
+  baseUrl: http://localhost:3003
+
+auth:
+  # see https://backstage.io/docs/tutorials/quickstart-app-auth to know more about enabling auth providers
+  providers: {}
+
+scaffolder:
+  bitbucket:
+    host: https://my-bitbucket-server.com
+    username: BITBUCKET_SERVER_USERNAME
+    personalToken:
+      $env: BITBUCKET_SERVER_PERSONAL_TOKEN
+
+integrations:
+  bitbucketServer:
+    - host: https://my-bitbucket-server.com
+      username:
+        $env: BITBUCKET_SERVER_USERNAME
+      appPassword:
+        $env: BITBUCKET_SERVER_PERSONAL_TOKEN
+
+catalog:
+  rules:
+    - allow: [Component, API, Group, User, Template, Location]
+  processors:
+    githubOrg:
+      providers:
+        - target: https://github.com
+          token:
+            $env: GITHUB_TOKEN
+
+  locations:
+    # Backstage example components
+    - type: url
+      target: https://github.com/spotify/backstage/blob/master/packages/catalog-model/examples/all-components.yaml
+
+    # Backstage example APIs
+    - type: url
+      target: https://github.com/spotify/backstage/blob/master/packages/catalog-model/examples/all-apis.yaml
+
+    # Backstage example templates
+    - type: github
+      target: https://github.com/spotify/backstage/blob/master/plugins/scaffolder-backend/sample-templates/react-ssr-template/template.yaml
+      rules:
+        - allow: [Template]
+    - type: github
+      target: https://github.com/spotify/backstage/blob/master/plugins/scaffolder-backend/sample-templates/springboot-grpc-template/template.yaml
+      rules:
+        - allow: [Template]
+    - type: github
+      target: https://github.com/spotify/backstage/blob/master/plugins/scaffolder-backend/sample-templates/create-react-app/template.yaml
+      rules:
+        - allow: [Template]
+    - type: github
+      target: https://github.com/spotify/cookiecutter-golang/blob/master/template.yaml
+      rules:
+        - allow: [Template]
+    - type: github
+      target: https://github.com/spotify/backstage/blob/master/plugins/scaffolder-backend/sample-templates/docs-template/template.yaml
+      rules:
+        - allow: [Template]
+    - type: url
+      target: https://my-bitbucket-server.com/rest/api/1.0/projects/SSFT/repos/backstage-graphql-template/raw/template.yaml
+      rules:
+        - allow: [Template]
