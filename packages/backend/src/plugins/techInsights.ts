@@ -35,13 +35,11 @@ import {
       factCheckerFactory: new JsonRulesEngineFactCheckerFactory({
         checks: [
           {
-            id: 'catalogYAMLChecks',
+            id: 'ServiceOwnership',
             type: JSON_RULE_ENGINE_CHECK_TYPE,
-            name: 'Catalog-Info YAML Checks',
-            description: 'YAML data quality checks',
+            name: 'Has owner',
+            description: 'This component has ownership defined in the catalog-info.yaml',
             factIds: [
-              'entityMetadataFactRetriever',
-              'techdocsFactRetriever',
               'entityOwnershipFactRetriever',
             ],
             rule: {
@@ -52,6 +50,61 @@ import {
                     operator: 'equal',
                     value: true,
                   },
+                ],
+              },
+            },
+          },
+          {
+            id: 'ServiceTitle',
+            type: JSON_RULE_ENGINE_CHECK_TYPE,
+            name: 'Has title',
+            description: 'This component has title defined in the catalog-info.yaml',
+            factIds: [
+              'entityMetadataFactRetriever',
+            ],
+            rule: {
+              conditions: {
+                all: [
+                  {
+                    fact: 'hasTitle',
+                    operator: 'equal',
+                    value: true,
+                  },
+                ],
+              },
+            },
+          },
+          {
+            id: 'ServiceDescription',
+            type: JSON_RULE_ENGINE_CHECK_TYPE,
+            name: 'Has description',
+            description: 'This component has description in the catalog-info.yaml',
+            factIds: [
+              'entityMetadataFactRetriever',
+            ],
+            rule: {
+              conditions: {
+                all: [
+                  {
+                    fact: 'hasDescription',
+                    operator: 'equal',
+                    value: true,
+                  },
+                ],
+              },
+            },
+          },
+          {
+            id: 'ServiceUsingTechDocs',
+            type: JSON_RULE_ENGINE_CHECK_TYPE,
+            name: 'Uses techdocs',
+            description: 'This component has `backstage.io/techdocs-ref` annotation defined in the catalog-info.yaml',
+            factIds: [
+              'techdocsFactRetriever',
+            ],
+            rule: {
+              conditions: {
+                all: [
                   {
                     fact: 'hasDescription',
                     operator: 'equal',
