@@ -25,12 +25,12 @@ import {
       database,
       discovery,
       factRetrievers: [
-        createFactRetrieverRegistration(
-          '* * * * *', // Example cron, every minute
-          entityOwnershipFactRetriever,
-        ),
-        createFactRetrieverRegistration('* * * * *', entityMetadataFactRetriever),
-        createFactRetrieverRegistration('* * * * *', techdocsFactRetriever),
+        createFactRetrieverRegistration({
+          cadence : '* * * * *', // Example cron, every minute
+          factRetriever: entityOwnershipFactRetriever,
+        }),
+        createFactRetrieverRegistration({cadence : '* * * * *', factRetriever: entityMetadataFactRetriever}),
+        createFactRetrieverRegistration({cadence: '* * * * *', factRetriever: techdocsFactRetriever}),
       ],
       factCheckerFactory: new JsonRulesEngineFactCheckerFactory({
         checks: [
